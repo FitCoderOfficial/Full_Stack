@@ -10,5 +10,8 @@ class User(AbstractUser):
     bio = models.TextField(blank=True, null=True)
 
     class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+    def __str__(self):
+        return f'{self.username}'

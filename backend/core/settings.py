@@ -1,18 +1,23 @@
 from pathlib import Path
 from datetime import timedelta
+import environ
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
+if READ_DOT_ENV_FILE:
+    environ.Env.read_env()
+
+
+DEBUG = env('DEBUG')
+SECRET_KEY = env('SECRET_KEY')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-adluh-x_1p1^c%u@duhwx&8vrjzrsaj$rnaot6+rb6=3oy_k6^"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -34,6 +39,13 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_yasg",
 
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # social login
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+
     # local apps
 
 ]
@@ -46,6 +58,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'allauth.account.middleware.AccountMiddleware',    
     # corsheaders
     "corsheaders.middleware.CorsMiddleware",
 ]
@@ -55,7 +68,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [ BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -120,8 +133,8 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
-STATICTILES_DIRS = [
-    BASE_DIR / "static",
+STATICFILES_DIRS = [
+    BASE_DIR / "assets",
 ]
 
 # Default primary key field type
@@ -136,10 +149,10 @@ CORS_ALLOWED_ORIGINS = [
     
 ]
 
-CORS_ALLOW_WHITELIST = [
-    "http://localhost:3000",
-    "http://localhost:8000",
-]
+# CORS_ALLOW_WHITELIST = [
+#     "http://localhost:3000",
+#     "http://localhost:8000",
+# ]
 
 # REST_FRAMEWORK
 REST_FRAMEWORK = {
@@ -161,3 +174,14 @@ SIMPLE_JWT = {
 }
 
 AUTH_User_MODEL = "users.User"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+
+# allauth 관련 추가 설정
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
