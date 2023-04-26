@@ -3,10 +3,10 @@ from datetime import timedelta
 import environ
 
 env = environ.Env(
-    DEBUG=(bool, False)
+    DEBUG=(bool, True)
 )
 
-READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
+READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=True)
 if READ_DOT_ENV_FILE:
     environ.Env.read_env()
 
@@ -39,14 +39,18 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_yasg",
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+
     # social login
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.facebook',
 
     # local apps
+    "apps.user",
+    "apps.post",
+    "apps.comment",
 
 ]
 
@@ -58,7 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',    
+    # 'allauth.account.middleware.AccountMiddleware',    
     # corsheaders
     "corsheaders.middleware.CorsMiddleware",
 ]
@@ -173,15 +177,15 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': True,
 }
 
-AUTH_User_MODEL = "users.User"
+AUTH_USER_MODEL = "user.User"
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    # 'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 SITE_ID = 1
 
 # allauth 관련 추가 설정
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = 'none'
