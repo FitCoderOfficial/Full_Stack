@@ -96,8 +96,8 @@ class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
-        username = request.data.get["username"]
-        password = request.data.get["password"]
+        username = request.data.get("username", "")
+        password = request.data.get("password", "")
         user = authenticate(username=username, password=password)
 
         if user:
