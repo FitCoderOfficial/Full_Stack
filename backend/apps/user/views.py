@@ -41,7 +41,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return super().get_permissions()
 
     def list(self, request):
-        user_serializer = self.serializer_class(self.get_queryset, many=True)
+        user_serializer = self.serializer_class(self.get_queryset(), many=True)
         return Response(user_serializer.data, status=status.HTTP_200_OK)
     
     def create(self, request):
@@ -57,7 +57,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user_serializer = self.serializer_class(user, data=request.data)
         if user_serializer.is_valid():
             user_serializer.save()
-            return Response({"message" : "User updated successfully"}, status=status.HTTP_200_OK)
+            return Response({"message" : "User updated successfully", 'data': user_serializer.data}, status=status.HTTP_200_OK)
         else:
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         

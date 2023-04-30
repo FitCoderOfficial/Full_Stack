@@ -2,7 +2,7 @@ from django.db import models
 from apps.post.models import Video
 from django.contrib.auth import get_user_model
 
-class Commant(models.Model):
+class Comment(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     content = models.TextField()
