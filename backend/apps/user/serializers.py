@@ -1,11 +1,24 @@
 from rest_framework import serializers
 from .models import User
+from apps.post.serializers import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class UserSerializer(serializers.ModelSerializer):
+    videos = VideoSerializer(many=True, read_only=True, source='video_set')
+    videos_count = serializers.SerializerMethodField()
+
+    short_videos = ShortVideoSerializer(many=True, read_only=True, source='shortvideo_set')
+    short_videos_count = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         exclude = ("password",)
+
+    def get_videos_count(self, obj):
+        return obj.video_set.count()
+    
+    def get_short_videos_count(self, obj):
+        return obj.shortvideo_set.count()
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,9 +43,16 @@ class ChangePasswordSerializer(serializers.Serializer):
     
 
 class SearchUserSerializer(serializers.ModelSerializer):
+    videos_count = serializers.SerializerMethodField()
     class Meta:
         model = User
         fields = ("id", "username", "email", "first_name", "last_name", "image", "bio")
+
+        def get_videos_count(self, obj):
+            return obj.videos.count()
+        
+        def get_short_videos_count(self, obj):
+            return obj.shortvideo_set.count()
 
 class UserLoggedSerializer(serializers.ModelSerializer):
     class Meta:
