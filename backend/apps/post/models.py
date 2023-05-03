@@ -14,13 +14,14 @@ class Video(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag)
-    duration = models.PositiveIntegerField()
     view_count = models.PositiveIntegerField(default=0)
+    publish_date = models.DateTimeField(null=True, blank=True)
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
     video_url = models.URLField(max_length=2000)  # 외부 동영상 링크
-    is_public = models.BooleanField(default=True)
     thumbnail = models.URLField(max_length=2000, blank=True, null=True)  # 외부 썸네일 링크
+    is_public = models.BooleanField(default=True)
+    duration = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
         ordering = ('-upload_date',)
@@ -37,14 +38,17 @@ class ShortVideo(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag)
-    is_public = models.BooleanField(default=True)
+    view_count = models.PositiveIntegerField(default=0)
     publish_date = models.DateTimeField(null=True, blank=True)
+    likes = models.PositiveIntegerField(default=0)
+    dislikes = models.PositiveIntegerField(default=0)
     video_url = models.URLField(max_length=2000)  # 외부 동영상 링크
     thumbnail = models.URLField(max_length=2000, blank=True, null=True)  # 외부 썸네일 링크
-    duration = models.PositiveIntegerField(default=60)
+    is_public = models.BooleanField(default=True)
+    duration = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        ordering = ('-publish_date', '-upload_date')
+        ordering = ('-upload_date',)
         verbose_name = "Short Video"
         verbose_name_plural = "Short Videos"
 
