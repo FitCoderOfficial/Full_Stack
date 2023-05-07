@@ -53,6 +53,7 @@ urlpatterns = [
     #viewsets
     path("", include('apps.user.routers')),
     path("", include('apps.post.routers')),
+    path("", include('apps.comment.routers')),
 ]
 
 if settings.DEBUG:
