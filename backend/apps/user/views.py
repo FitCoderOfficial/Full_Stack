@@ -55,6 +55,12 @@ class UserViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None):
         user = self.get_object(pk=pk)
         user_serializer = self.serializer_class(user, data=request.data)
+        # 이미지 데이터가 없거나 비어 있는 경우, 기존 이미지를 유지
+        if 'image' not in request.data or request.data['image'] == "":
+            request.data._mutable = True
+            request.data['image'] = user.image
+            request.data._mutable = False
+            
         if user_serializer.is_valid():
             user_serializer.save()
             return Response({"message" : "User updated successfully", 'data': user_serializer.data}, status=status.HTTP_200_OK)

@@ -30,7 +30,7 @@ class VideoViewSet(viewsets.ModelViewSet):
         paginator = CustomPagination()
         results = paginator.paginate_queryset(videos, request)
 
-        posts_serializer = self.serializer(results, many=True)
+        posts_serializer = self.serializer_class(results, many=True)
         return paginator.get_paginated_response(posts_serializer.data)
         
     def create(self, request):
@@ -138,7 +138,7 @@ class ShortVideoViewSet(viewsets.ModelViewSet):
         paginator = CustomPagination()
         results = paginator.paginate_queryset(shortvideos, request)
 
-        posts_serializer = self.serializer(results, many=True)
+        posts_serializer = self.serializer_class(results, many=True)
         return paginator.get_paginated_response(posts_serializer.data)
         
     def create(self, request):
