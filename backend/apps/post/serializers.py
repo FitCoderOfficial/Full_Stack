@@ -6,6 +6,8 @@ class VideoSerializer(serializers.ModelSerializer):
     uploader_image = serializers.ReadOnlyField(source='uploader.image.url')
     uploader_id = serializers.ReadOnlyField(source='uploader.id')
     likes = serializers.SerializerMethodField()
+    dislikes = serializers.SerializerMethodField()
+    
     
     class Meta:
         model = Video
@@ -13,12 +15,17 @@ class VideoSerializer(serializers.ModelSerializer):
 
     def get_likes(self, obj):
         return [user.username for user in obj.likes.all()]
+    
+    def get_dislikes(self, obj):
+        return [user.username for user in obj.dislikes.all()]
 
 class ShortVideoSerializer(serializers.ModelSerializer):
     uploader = serializers.ReadOnlyField(source='uploader.username')
     uploader_image = serializers.ReadOnlyField(source='uploader.image.url')
     uploader_id = serializers.ReadOnlyField(source='uploader.id')
     likes = serializers.SerializerMethodField()
+    dislikes = serializers.SerializerMethodField()
+
     
     class Meta:
         model = ShortVideo
@@ -26,6 +33,9 @@ class ShortVideoSerializer(serializers.ModelSerializer):
 
     def get_likes(self, obj):
         return [user.username for user in obj.likes.all()]
+    
+    def get_dislikes(self, obj):
+        return [user.username for user in obj.dislikes.all()]
 
 
 class VideoCreateSerializer(serializers.ModelSerializer):
