@@ -1,10 +1,11 @@
 from rest_framework import serializers
-from .models import Comment 
+from django.contrib.contenttypes.models import ContentType
+from .models import Comment, ShortComment
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='user.username')
     author_image = serializers.ReadOnlyField(source='user.image.url')
-    post = serializers.ReadOnlyField(source='video.title')
+    video_title = serializers.ReadOnlyField(source='video.title')
 
     class Meta:
         model = Comment
@@ -16,3 +17,16 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 
+class ShortCommentSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='user.username')
+    author_image = serializers.ReadOnlyField(source='user.image.url')
+    short_video_title = serializers.ReadOnlyField(source='short_video.title')
+
+    class Meta:
+        model = ShortComment
+        fields = '__all__'
+
+class ShortCommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShortComment
+        fields = '__all__'

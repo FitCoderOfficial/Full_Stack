@@ -16,9 +16,9 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.user}님이 {self.video.title}글에 댓글을 남겼습니다."
     
-class Short_Comment(models.Model):
+class ShortComment(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    video = models.ForeignKey(ShortVideo, on_delete=models.CASCADE)
+    short_video = models.ForeignKey(ShortVideo, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -28,4 +28,4 @@ class Short_Comment(models.Model):
         verbose_name_plural = "Short_Comments"
         ordering = ["-pk"]
     def __str__(self):
-        return f"{self.user}님이 {self.video.title}글에 댓글을 남겼습니다."
+        return f"{self.user}님이 {self.short_video.title}글에 댓글을 남겼습니다."
