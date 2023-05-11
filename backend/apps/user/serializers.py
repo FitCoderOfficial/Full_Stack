@@ -44,15 +44,16 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class SearchUserSerializer(serializers.ModelSerializer):
     videos_count = serializers.SerializerMethodField()
+    shortvideos_count = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ("id", "username", "email", "first_name", "last_name", "image", "bio")
+        fields = ("id", "username", "email", "first_name", "last_name", "image", "bio", "videos_count","shortvideos_count")
 
-        def get_videos_count(self, obj):
-            return obj.videos.count()
-        
-        def get_short_videos_count(self, obj):
-            return obj.shortvideo_set.count()
+    def get_videos_count(self, obj):
+        return Video.objects.filter(uploader=obj).count()
+    
+    def get_shortvideos_count(self, obj):
+        return ShortVideo.objects.filter(uploader=obj).count()
 
 class UserLoggedSerializer(serializers.ModelSerializer):
     class Meta:

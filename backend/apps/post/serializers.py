@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import * 
+from apps.comment.serializers import CommentSerializer
 
 class VideoSerializer(serializers.ModelSerializer):
     uploader = serializers.ReadOnlyField(source='uploader.username')
@@ -7,6 +8,7 @@ class VideoSerializer(serializers.ModelSerializer):
     uploader_id = serializers.ReadOnlyField(source='uploader.id')
     likes = serializers.SerializerMethodField()
     dislikes = serializers.SerializerMethodField()
+    commnet = CommentSerializer(many=True, read_only=True)
     
     
     class Meta:
@@ -25,6 +27,7 @@ class ShortVideoSerializer(serializers.ModelSerializer):
     uploader_id = serializers.ReadOnlyField(source='uploader.id')
     likes = serializers.SerializerMethodField()
     dislikes = serializers.SerializerMethodField()
+    commnet = CommentSerializer(many=True, read_only=True)
 
     
     class Meta:
