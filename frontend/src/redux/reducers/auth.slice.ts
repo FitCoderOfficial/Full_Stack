@@ -25,7 +25,7 @@ const authSlice = createSlice({
             localStorage.removeItem('acccess');
             localStorage.removeItem('refresh');
             state.access = null;
-            state.access = null;
+            state.refresh = null;
             state.is_authenticated = false;
             state.is_loading=true
             state.user = null

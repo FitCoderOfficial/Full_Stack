@@ -65,3 +65,8 @@ export interface AuthState {
     is_loading: boolean;
     user: User | null;
 }
+
+
+export interface Form {
+    [key:string]:string 
+}

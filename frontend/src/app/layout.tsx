@@ -1,7 +1,7 @@
+import { ReduxProvider } from '@/redux/store/ReduxProvider'
+import "../../public/globals.css"
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import "../../public/globals.css"
-import { ReduxProvider } from '@/redux/store/ReduxProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +20,10 @@ export default function RootLayout({
       lang="en"
       className='dark'
     >
-      <body className={inter.className}>
+      <body className={`${inter.className} 
+      bg-grey-100 text-black dark:bg-dark-200 dark:text-white
+      treansition-colors duration-300 ease-in
+      `}>
 
         <main>
           <ReduxProvider>
