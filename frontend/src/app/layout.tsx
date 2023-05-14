@@ -21,10 +21,9 @@ export default function RootLayout({
       className='dark'
     >
       <body className={`${inter.className} 
-      bg-grey-100 text-black dark:bg-dark-200 dark:text-white
-      treansition-colors duration-300 ease-in
+      bg-gray-100 text-black dark:bg-dark-200 dark:text-white
+      treansition-colors ease-in duration-300 
       `}>
-
         <main>
           <ReduxProvider>
             {children}

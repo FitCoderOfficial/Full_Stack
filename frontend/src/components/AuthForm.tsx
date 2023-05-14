@@ -17,30 +17,30 @@ const AuthForm = ({ process }: { process: string }) => {
                     type="text"
                     placeholder="Username"
                     name="username"
+                    className="input"
+                    required
+                    autoFocus
+                    onChange={handleChange}
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    className='input'
+                    required
+                    autoFocus
+                    onChange={handleChange}
+                />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    name="email"
                     className='input'
                     required
                     autoFocus
                     onChange={handleChange}
                 />
             </form>
-            <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                className='input'
-                required
-                autoFocus
-                onChange={handleChange}
-            />
-            <input
-            type="email"
-            placeholder="Email"
-            name="email"
-            className='input'
-            required
-            autoFocus
-            onChange={handleChange}
-        />
         </div>
     )
 }
