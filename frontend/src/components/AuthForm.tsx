@@ -5,14 +5,14 @@ import { Form } from '@/interface/interface'
 const AuthForm = ({ process }: { process: string }) => {
 
     const [form, setForm] = useState<Form>({})
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
     return (
-        <div>
-            <form action="">
-                <h1>{process}</h1>
+        <div className='h-screen w-screen flex items-center justify-center' style={{background:'url(https://i.stack.imgur.com/vzbuQ.jpg)'}}>
+            <form className='relative flex flex-col w-[580px] justify-center gap-y-5 bg-white/[.03] py-10 px-12 backdrop-blur-[3px]'>
+                <h1 className='text-5xl font-bold text-white'>{process}</h1>
                 <input
                     type="text"
                     placeholder="Username"
@@ -40,6 +40,7 @@ const AuthForm = ({ process }: { process: string }) => {
                     autoFocus
                     onChange={handleChange}
                 />
+                <button className='formButton'>{process}</button>
             </form>
         </div>
     )

@@ -31,6 +31,9 @@
   .input { 
     @apply py-3 px-5 bg-transparent text-white/90 border-b-[1px] outline-none placeholder:text-white/80
   }
+  .formButton { 
+    @apply bg-blue-600 w-fit px-3 py-1 rounded-md self-end text-white/80
+  }
 } 
 
 
