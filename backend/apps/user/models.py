@@ -8,6 +8,7 @@ def user_image(instance, filename):
 class User(AbstractUser):
     email = models.EmailField(unique=True, null=False, blank=False)
     image = models.ImageField(upload_to=user_image, default='static/images/default_profile_image.png')
+    picture_url = models.URLField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
 
     class Meta:

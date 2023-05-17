@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'image', 'bio')
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'image','picture_url', 'bio')
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -48,7 +48,7 @@ class SearchUserSerializer(serializers.ModelSerializer):
     shortvideos_count = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ("id", "username", "email", "first_name", "last_name", "image", "bio", "videos_count","shortvideos_count")
+        fields = ("id", "username", "email", "first_name", "last_name", "image", "picture_url", "bio", "videos_count","shortvideos_count")
 
     def get_videos_count(self, obj):
         return Video.objects.filter(uploader=obj).count()
@@ -59,7 +59,7 @@ class SearchUserSerializer(serializers.ModelSerializer):
 class UserLoggedSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username", "email", "first_name", "last_name", "image", "bio")
+        fields = ("id", "username", "email", "first_name", "last_name", "image", "picture_url", "bio")
 
 
 # AUTHENTICATION
