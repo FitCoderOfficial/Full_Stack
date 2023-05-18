@@ -4,7 +4,7 @@ import { Form } from '@/interface/interface'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { login } from '@/services/auth'
-
+import toast, { Toaster } from 'react-hot-toast'
 
 const AuthForm = ({ process }: { process: string }) => {
 
@@ -19,8 +19,8 @@ const AuthForm = ({ process }: { process: string }) => {
         e.preventDefault()
         if (pathname === '/login') {
             try{
-                const response = await login(form)
-                console.log(response)
+                const {message, user} = await login(form)
+                toast.success(message, {duration: 4000})
             } catch(err) {
                 console.log(err)
             }
@@ -80,6 +80,7 @@ const AuthForm = ({ process }: { process: string }) => {
                 }
                 <button className='formButton'>{process}</button>
             </form>
+            <Toaster />
         </div>
     )
 }
