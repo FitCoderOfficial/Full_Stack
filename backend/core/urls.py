@@ -41,7 +41,10 @@ urlpatterns = [
     path("", include('apps.post.urls')),
     path("", include('apps.comment.urls')),
 
-    path('accounts/', include('allauth.urls')),
+    #djoser
+    path('api/', include('djoser.urls')),
+    path('api/', include('djoser.urls.jwt')),
+
 
     #simplejwt
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),

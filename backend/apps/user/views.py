@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from django.db.models import Q
 from .pagination import CustomPagination
 
+
 def staff_required(view_func):
     def wrapped_view(view_instance, request, *args, **kwargs):
         if request.user.is_staff:
@@ -143,3 +144,4 @@ class UserLoggedDataView(APIView):
        user = request.user
        user_serializer = UserLoggedSerializer(user)
        return Response(user_serializer.data, status=status.HTTP_200_OK)   
+   

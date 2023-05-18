@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",
+    # "django.contrib.sites",
 
     # installed apps
     "rest_framework",
@@ -39,14 +39,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "drf_yasg",
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    # social login
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
+    'djoser',
+    'social_django',
 
     # local apps
     "apps.user",
@@ -63,7 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',    
+    # 'allauth.account.middleware.AccountMiddleware',    
     
     # corsheaders
     "corsheaders.middleware.CorsMiddleware",
@@ -173,8 +167,8 @@ REST_FRAMEWORK = {
 
 # JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
@@ -183,56 +177,37 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = "user.User"
 
 AUTHENTICATION_BACKENDS = [
+    #Facebook
+    'social_core.backends.facebook.FacebookOAuth2',
+    #Google
+    'social_core.backends.google.GoogleOAuth2',
+    # Django
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# 로그인 후 리디렉션할 페이지
-LOGIN_REDIRECT_URL = '/'
-# 로그아웃 후 리디렉션할 페이지
-ACCOUNT_LOGOUT_REDIRECT_URL = '/'
-# 로그아웃 버튼 클릭 시 자동 로그아웃
-ACCOUNT_LOGOUT_ON_GET = True
-
-SITE_ID = 3
-
-# allauth 관련 추가 설정
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
-        'OAUTH_PKCE_ENABLED': True,
-    },
-    'facebook': {
-        'METHOD': 'oauth2',  # Set to 'js_sdk' to use the Facebook connect SDK
-        # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
-        'SCOPE': ['email', 'public_profile'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'first_name',
-            'last_name',
-            'middle_name',
-            'name',
-            'name_format',
-            'picture',
-            'short_name'
-        ],
-        'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': 'path.to.callable',
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v13.0',
-        'GRAPH_API_URL': 'https://graph.facebook.com/v13.0',
-    }
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'password-reset/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'TOKEN_MODEL': None,
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': env('REDIRECT_URLS').split(','),
 }
 
-SOCIALACCOUNT_ADAPTER = 'apps.user.adapters.CustomSocialAccountAdapter'
+SOCIAL_AUTH_FACEBOOK_KEY = env('FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = env('FACEBOOK_SECRET')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_SECRET')
+
+#EMAIL SETTINGS
+# EMAIL_BACKEND = 'django_ses.SESBackend'
+# DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+
+# AWS_SES_ACCESS_KEY_ID = env('AWS_SES_ACCESS')
+# AWS_SES_SECRET_ACCESS_KEY = env('AWS_SES_SECRET')
+# AWS_SES_REGION_NAME = env('AWS_SES_REGION_NAME')
+# AWS_SES_REGION_ENDPOINT = f'email.{AWS_SES_REGION_NAME}.amazonaws.com'
+# AWS_SES_FROM_EMAIL = env('AWS_SES_FROM_EMAIL')
+# USE_SES_V2=True
