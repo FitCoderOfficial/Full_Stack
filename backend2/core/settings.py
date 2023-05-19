@@ -170,7 +170,11 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = "user.User"
 
 AUTHENTICATION_BACKENDS = [
-    # Django
+    # 'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    # 'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    # Djangoß
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -210,7 +214,9 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
     'TOKEN_MODEL': None,
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': env('REDIRECT_URLS').split(',')
+    # 'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': env('REDIRECT_URLS').split(',')
+    # 'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': env.list('REDIRECT_URLS')
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ["http://localhost:3000/auth/google", "http://localhost:3000/auth/facebook"]
 }
 
 
@@ -240,9 +246,8 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 }
 
 #CORS
-CORS_ALLOWED_ORIGINS = env(
-    'CORS_ALLOWED_ORIGINS'
-).split(',')
+# CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
 
 # CORS_ALLOW_WHITELIST = [
 #     "http://localhost:3000",

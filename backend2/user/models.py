@@ -8,7 +8,7 @@ def user_image(instance, filename):
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password, **kwargs):
+    def create_user(self, email, password=None, **kwargs):
         if not email:
             raise ValueError('Users must have an email address')
 
