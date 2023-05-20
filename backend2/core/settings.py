@@ -1,6 +1,9 @@
 from pathlib import Path
 from datetime import timedelta
 import environ
+import sys
+import dj_database_url
+
 
 env = environ.Env(
     DEBUG=(bool, True)
@@ -18,8 +21,9 @@ SECRET_KEY = env('SECRET_KEY')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEVELOPMENT_MODE = env('DEVELOPMENT_MODE')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -91,12 +95,21 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }  
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if env('DATABASE_URL', None) is None:
+        raise Exception('RDS_DB_NAME not found in os.environ')
+    DATABASES = {
+        'default': dj_database_url.parse(env('DATABASE_URL'))
+        }
+    
 
 
 # Password validation
@@ -214,9 +227,8 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
     'TOKEN_MODEL': None,
-    # 'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': env('REDIRECT_URLS').split(',')
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ["http://localhost:3000/auth/google","http://localhost:3000/auth/facebook"]
     # 'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': env.list('REDIRECT_URLS')
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ["http://localhost:3000/auth/google", "http://localhost:3000/auth/facebook"]
 }
 
 
