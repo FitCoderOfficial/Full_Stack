@@ -53,7 +53,9 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # local apps
-    "user", 
+    "apps.user", 
+    "apps.post",
+    "apps.comment",
     
 
 ]
@@ -163,7 +165,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         # "rest_framework_simplejwt.authentication.JWTAuthentication",
-        'user.authentication.CustomJWTAuthentication',
+        'apps.user.authentication.CustomJWTAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         # "rest_framework.permissions.IsAuthenticated",
