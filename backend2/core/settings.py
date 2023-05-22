@@ -47,10 +47,13 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
 
     'djoser',
+    'storages',
+
 
     'social_django',
 
     'corsheaders',
+    "drf_yasg",
 
     # local apps
     "apps.user", 
@@ -98,19 +101,19 @@ WSGI_APPLICATION = "core.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-if DEVELOPMENT_MODE is True:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }  
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if env('DATABASE_URL', None) is None:
-        raise Exception('RDS_DB_NAME not found in os.environ')
-    DATABASES = {
-        'default': dj_database_url.parse(env('DATABASE_URL'))
-        }
+# if DEVELOPMENT_MODE is True:
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}  
+# elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+#     if env('DATABASE_URL', None) is None:
+#         raise Exception('RDS_DB_NAME not found in os.environ')
+#     DATABASES = {
+#         'default': dj_database_url.parse(env('DATABASE_URL'))
+#         }
     
 
 
@@ -148,6 +151,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+# if DEVELOPMENT_MODE is True:
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 MEDIA_URL = "media/"
@@ -155,6 +159,23 @@ MEDIA_ROOT = BASE_DIR / "media"
 STATICFILES_DIRS = [
     BASE_DIR / "assets",
 ]
+# else:
+#     AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
+#     AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
+#     AWS_S3_BUCKET_NAME = env('AWS_S3_BUCKET_NAME')
+#     AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
+#     AWS_S3_ENDPOINT_URL = f'https://s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+#     AWS_S3_OBJECT_PARAMETERS = {
+#         'CacheControl': 'max-age=86400',
+#     }
+#     AWS_DEFAULT_ACL = 'public-read'
+#     AWS_LOCATION = 'static'
+#     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
+#     STORAGES={
+#         "default":{"backend":"storages.backends.s3boto3.s3boto3SStorage"},
+#         'staticfiles':{'BACKEND':'django_s3_storage.storage.StaticS3Storage'} 
+#     }
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -164,11 +185,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # REST_FRAMEWORK
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # "rest_framework_simplejwt.authentication.JWTAuthentication",
-        'apps.user.authentication.CustomJWTAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # 'apps.user.authentication.Custom/JWTAuthentication',
     ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        # "rest_framework.permissions.IsAuthenticated",
+    "DEFAULT_PERMISSION_CLASSES": [  
+        # 'rest_framework.permissions.IsAuthenticated',
+        # "rest_framework.permissions.BasePermission",
         "rest_framework.permissions.AllowAny",
     ],
 }
@@ -185,11 +207,11 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = "user.User"
 
 AUTHENTICATION_BACKENDS = [
-    # 'social_core.backends.google.GoogleOAuth2',
+    # GoogleOAuth2,
     'social_core.backends.google.GoogleOAuth2',
-    # 'social_core.backends.facebook.FacebookOAuth2',
+    # Facebook,
     'social_core.backends.facebook.FacebookOAuth2',
-    # Djangoß
+    # Django
     'django.contrib.auth.backends.ModelBackend',
 ]
 
