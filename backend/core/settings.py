@@ -3,7 +3,10 @@ from datetime import timedelta
 import environ
 import sys
 import dj_database_url
+import django_heroku
 
+# Activate Django-Heroku.
+django_heroku.settings(locals())
 
 env = environ.Env(
     DEBUG=(bool, True)
@@ -23,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEVELOPMENT_MODE = env('DEVELOPMENT_MODE')
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com', "*"]
 
 
 # Application definition
@@ -71,6 +74,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # whitenoise
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     
     # corsheaders
     "corsheaders.middleware.CorsMiddleware",
@@ -99,6 +105,20 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'FullAuth_API',
+        'USER': 'master',
+        'PASSWORD': 'toqur9393!!',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 
 # if DEVELOPMENT_MODE is True:
@@ -289,3 +309,6 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
 #     "http://localhost:3000",
 #     "http://localhost:8000",
 # ]
+
+
+
