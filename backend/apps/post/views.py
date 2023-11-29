@@ -26,6 +26,9 @@ class VideoViewSet(viewsets.ModelViewSet):
         return get_object_or_404(Video, pk=pk)
         
     def list(self, request):
+        """
+        비디오 목록을 조회합니다.
+        """
         videos = self.serializer_class.Meta.model.objects.order_by('-id')
         paginator = CustomPagination()
         results = paginator.paginate_queryset(videos, request)
@@ -34,6 +37,9 @@ class VideoViewSet(viewsets.ModelViewSet):
         return paginator.get_paginated_response(posts_serializer.data)
         
     def create(self, request):
+        """
+        새로운 비디오를 생성합니다.
+        """
         video_serializer = VideoCreateSerializer(data=request.data)
         if video_serializer.is_valid():
             video_serializer.save(uploader=request.user)
@@ -42,11 +48,17 @@ class VideoViewSet(viewsets.ModelViewSet):
             return Response(video_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def retrieve(self, request, pk=None):
+        """
+        특정 비디오를 ID로 조회합니다.
+        """
         videos = self.get_object(pk=pk)
         video_serializer = self.serializer_class(videos)
         return Response(video_serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
+        """
+        특정 비디오를 ID로 업데이트합니다.
+        """
         video = self.get_object(pk)
         if not is_owner(request, video):
             return Response({"error": "You can't edit this video."}, status=status.HTTP_403_FORBIDDEN)
@@ -70,6 +82,9 @@ class VideoViewSet(viewsets.ModelViewSet):
                     return Response(video_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                 
     def destroy(self, request, pk=None):
+        """
+        특정 비디오를 ID로 삭제합니다.
+        """
         video = self.get_object(pk)
         if not is_owner(request, video):
             return Response({"error": "You can't delete this video."}, status=status.HTTP_403_FORBIDDEN)
@@ -80,6 +95,9 @@ class VideoViewSet(viewsets.ModelViewSet):
 
 class VideoLikeView(APIView):
     def post(self, request, video_id):
+        """
+        비디오를 좋아요합니다.
+        """
         try:
             # post.likes += 1
             video = get_object_or_404(Video, pk=video_id)
@@ -90,6 +108,9 @@ class VideoLikeView(APIView):
 
 class VideoRemoveLikeView(APIView):
     def delete(self, request, video_id):
+        """
+        비디오 좋아요를 취소합니다.
+        """
         try:
             video = get_object_or_404(Video, pk=video_id)
             video.likes.remove(request.user)
@@ -99,6 +120,9 @@ class VideoRemoveLikeView(APIView):
 
 class VideoDislikeView(APIView):
     def post(self, request, video_id):
+        """
+        비디오를 싫어요합니다.
+        """
         try:
             video = get_object_or_404(Video, pk=video_id)
             video.dislikes.add(request.user)
@@ -108,6 +132,9 @@ class VideoDislikeView(APIView):
         
 class VideoRemoveDislikeView(APIView):
     def delete(self, request, video_id):
+        """
+        비디오 싫어요를 취소합니다.
+        """
         try:
             video = get_object_or_404(Video, pk=video_id)
             video.dislikes.remove(request.user)
@@ -134,6 +161,9 @@ class ShortVideoViewSet(viewsets.ModelViewSet):
         return get_object_or_404(ShortVideo, pk=pk)
         
     def list(self, request):
+        """
+        짧은 비디오 목록을 조회합니다.
+        """
         shortvideos = self.serializer_class.Meta.model.objects.order_by('-id')
         paginator = CustomPagination()
         results = paginator.paginate_queryset(shortvideos, request)
@@ -142,6 +172,9 @@ class ShortVideoViewSet(viewsets.ModelViewSet):
         return paginator.get_paginated_response(posts_serializer.data)
         
     def create(self, request):
+        """
+        새로운 짧은 비디오를 생성합니다.
+        """
         shortvideo_serializer = ShortVideoCreateSerializer(data=request.data)
         if shortvideo_serializer.is_valid():
             shortvideo_serializer.save(uploader=request.user)
@@ -150,11 +183,17 @@ class ShortVideoViewSet(viewsets.ModelViewSet):
             return Response(shortvideo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def retrieve(self, request, pk=None):
+        """
+        특정 짧은 비디오를 ID로 조회합니다.
+        """
         shortvideos = self.get_object(pk=pk)
         shortvideo_serializer = self.serializer_class(shortvideos)
         return Response(shortvideo_serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
+        """
+        특정 짧은 비디오를 ID로 업데이트합니다.
+        """
         shortvideo = self.get_object(pk)
         if not is_owner(request, shortvideo):
             return Response({"error": "You can't edit this shortvideo."}, status=status.HTTP_403_FORBIDDEN)
@@ -178,6 +217,9 @@ class ShortVideoViewSet(viewsets.ModelViewSet):
                     return Response(shortvideo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                 
     def destroy(self, request, pk=None):
+        """
+        특정 짧은 비디오를 ID로 삭제합니다.
+        """
         shortvideo = self.get_object(pk)
         if not is_owner(request, shortvideo):
             return Response({"error": "You can't delete this shortvideo."}, status=status.HTTP_403_FORBIDDEN)
@@ -188,6 +230,9 @@ class ShortVideoViewSet(viewsets.ModelViewSet):
 
 class ShortVideoLikeView(APIView):
     def post(self, request, video_id):
+        """
+        짧은 비디오를 좋아요합니다.
+        """
         try:
             # post.likes += 1
             shortvideo = get_object_or_404(ShortVideo, pk=video_id)
@@ -198,6 +243,9 @@ class ShortVideoLikeView(APIView):
 
 class ShortVideoRemoveLikeView(APIView):
     def delete(self, request, video_id):
+        """
+        짧은 비디오 좋아요를 취소합니다.
+        """
         try:
             shortvideo = get_object_or_404(ShortVideo, pk=video_id)
             shortvideo.likes.remove(request.user)
@@ -207,6 +255,9 @@ class ShortVideoRemoveLikeView(APIView):
 
 class ShortVideoDislikeView(APIView):
     def post(self, request, video_id):
+        """
+        짧은 비디오를 싫어요합니다.
+        """
         try:
             shortvideo = get_object_or_404(ShortVideo, pk=video_id)
             shortvideo.dislikes.add(request.user)
@@ -216,6 +267,9 @@ class ShortVideoDislikeView(APIView):
         
 class ShortVideoRemoveDislikeView(APIView):
     def delete(self, request, video_id):
+        """
+        짧은 비디오 싫어요를 취소합니다.
+        """
         try:
             shortvideo = get_object_or_404(ShortVideo, pk=video_id)
             shortvideo.dislikes.remove(request.user)

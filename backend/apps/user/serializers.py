@@ -4,6 +4,7 @@ from apps.post.serializers import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class UserSerializer(serializers.ModelSerializer):
+    # Video와 ShortVideo의 시리얼라이저를 연결하여 사용자가 업로드한 비디오 및 숏 비디오의 데이터를 포함합니다.
     videos = VideoSerializer(many=True, read_only=True, source='video_set')
     videos_count = serializers.SerializerMethodField()
 
